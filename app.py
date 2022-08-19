@@ -1,7 +1,7 @@
 import os
 
-from flask import Flask, abort
-from flask.globals import request
+from flask import Flask, abort, Response, request
+
 
 from utils import make_query
 
@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
 @app.route("/perform_query")
-def perform_query():
+def perform_query() -> Response:
     # получаем параметры
     cmd1 = request.args.get('cmd1')
     cmd2 = request.args.get('cmd2')

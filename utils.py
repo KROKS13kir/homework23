@@ -1,26 +1,26 @@
 # функция, формирующая данные по необходимому файлу
-def make_query(cmd, val, file):
-    if cmd == 'filter':
-        result = filter(lambda v: val in v, file)
-        return result
-    if cmd == 'map':
-        try:
-            result = [line.split()[int(val)] for line in file]
-            return result
-        except StopIteration:
-            print("Выход за пределы")
+import re
+from typing import Iterable, Optional
+
+
+def make_query(cmd: Optional[str], val: Optional[str], file: Iterable) -> Iterable:
+    data_mapped = map(lambda x: x.strip, file)
     if cmd == 'unique':
-        result = list(set(file))
-        return result
-    if cmd == 'sort':
-        reverse_direction: bool = ('desc' == val.lower())
-        return sorted(file, reverse=reverse_direction)
-    if cmd == 'limit':
-        try:
-            return list(file)[:int(val)]
-        except StopIteration:
-            print("Выход за пределы")
+        return set(data_mapped)
+    if val:
+        if cmd == 'filter':
+            result = filter(lambda v: val in v, data_mapped)
+            return result
+        if cmd == 'map':
+            return map(lambda x: x.split(" ")[int(val)], data_mapped)
+        if cmd == 'sort':
+            reverse_direction: bool = ('desc' == val.lower())
+            return sorted(data_mapped, reverse=reverse_direction)
+        if cmd == 'limit':
+            return list(data_mapped)[:int(val)]
+        if cmd == 'regex':
+            regex = re.compile(val)
+            result = filter(lambda x: regex.search(x), file)
+            return result
 
-
-
-
+    return data_mapped
