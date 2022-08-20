@@ -27,7 +27,7 @@ def perform_query() -> Response:
         abort(400)
 
     # работаем с файлом, вызываем необходимые функции
-    with open(file_name) as necessary_file:
+    with open(file_path) as necessary_file:
         result = make_query(cmd1, value1, necessary_file)
         if cmd2 and value2:
             result = make_query(cmd2, value2, result)
